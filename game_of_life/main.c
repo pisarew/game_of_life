@@ -44,35 +44,30 @@ void output(char** matrix) {
     }
 
 }
+int live_neighbors(char** matrix, int x, int y) {
+    int neighbors = 0;
+    for (int i = x - 1; i <= x + 1; i++)
+        for (int j = y - 1; j <= y + 1; j++) {
+            if (i == x && j == y)
+                continue;
+            if (matrix[i][j] == '*')
+                neighbors++;
+        }
+    return neighbors;
+}
 void run(char** matrix) {
     while (1) {
         sleep(1);
-        system("clear");
+        //system("clear");
         output(matrix);
         for (int i = 1; i < N - 1; i++) {
-            int neighbors = 0;
+            
             for (int j = 1; j < M - 1; j++) {
-                if (matrix[i - 1][j - 1] == '*')
-                    neighbors++;
-                if (matrix[i - 1][j] == '*')
-                    neighbors++;
-                if (matrix[i - 1][j + 1] == '*')
-                    neighbors++;
-                if (matrix[i][j - 1] == '*')
-                    neighbors++;
-                if (matrix[i][j + 1] == '*')
-                    neighbors++;
-                if (matrix[i + 1][j - 1] == '*')
-                    neighbors++;
-                if (matrix[i + 1][j] == '*')
-                    neighbors++;
-                if (matrix[i - 1][j + 1] == '*')
-                    neighbors++;
-                if ((neighbors < 2 || neighbors > 3) && matrix[i][j] == '*')
-                    matrix[i][j] = '-';
+                int neighbors = live_neighbors(matrix, i, j);
                 if (neighbors == 3 && matrix[i][j] == ' ')
                     matrix[i][j] = '+';
-
+                if ((neighbors < 2 || neighbors > 3) && matrix[i][j] == '*')
+                    matrix[i][j] = '-';
             }
         }
     }
